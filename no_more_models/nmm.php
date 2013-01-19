@@ -54,6 +54,16 @@ class NMM {
 		return new NMM_Object($tableName, $this->_db);
 	}
 	
+	public function fetchRowPK($tableName, $primaryFieldName, $value, $retObject=false) {
+		$obj = $this->createObject($tableName);
+		$obj->setPrimary($primaryFieldName, $value);
+		$obj->fill();
+		if($retObject == true)
+			return $obj;
+		else
+			return $obj->get();
+	}
+	
 	public function fetchRow($tableName, $where, $retObject=false) {
 		$obj = $this->createObject($tableName);
 		$obj->fill($where);
@@ -64,6 +74,26 @@ class NMM {
 	}
 	
 	public function fetchAll($tableName, $limit, $retObject=false) {
+	}
+	
+	//------ STATIC WRAPERS ----
+	static public function DB() {
+		return NMM::getInstance()->getDB();
+	}
+	static public function ADP() {
+		return NMM::getInstance()->getADP(); 
+	}
+	static public function recache() {
+		return NMM::getInstance()->deleteCache(); 
+	}
+	static public function create($tableName) { 
+		return NMM::getInstance()->createObject($tableName); 
+	}
+	static public function fetchR($tableName, $where, $retObject=false) {
+		return NMM::getInstance()->fetchRow($tableName, $where, $retObject);
+	}
+	static public function fetchRPK($tableName, $primaryFieldName, $value, $retObject=false) {
+			return NMM::getInstance()->fetchRowPK($tableName, $primaryFieldName, $value, $retObject);
 	}
 }
 

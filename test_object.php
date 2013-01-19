@@ -39,10 +39,9 @@ $time = explode(' ', $time);
 $time = $time[1] + $time[0];
 $start = $time;
 
-NMM::getInstance()->createObject('test');
 
 print ("-- EMPTYOBJ --<br>");
-$empty = NMM::getInstance()->getDB()->getEmptyObject('test');
+$empty = NMM::getInstance()->getDB()->getEmptyObject('test'); // or NMM::getInstance()->createObject('test');
 print_array($empty);
 stopwatch($start);
 
@@ -74,7 +73,6 @@ print_array($nmm_obj2->get());
 stopwatch($start);
 
 
-/* It's working!*/
 print ("-- Insert --<br>");
 $nmm_obj3 = NMM::getInstance()->createObject('test');
 $tmp_name = generateRandomString();
@@ -90,7 +88,7 @@ $nmm_obj4->fill("name = '".$tmp_name."'");
 print_array($nmm_obj4->get());
 stopwatch($start);
 
-/*
+/* It's working too!
 print ("-- Delete --<br>");
 $nmm_obj5 = NMM::getInstance()->createObject('test');
 $nmm_obj5->delete("test_id = 3");
