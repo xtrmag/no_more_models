@@ -1,6 +1,6 @@
 <?php
-include "nmm.conf.php";
 include "nmm.log.php";
+include "nmm.conf.php";
 include "adapters/nmm.abstract.adapter.php";
 include "adapters/nmm.std.mysql.adapter.php";
 include "adapters/nmm.std.postgres.adapter.php";
@@ -34,6 +34,17 @@ class NMM {
 	
 	public function getADP() {
 		return $this->_adp;
+	}
+	
+	public function deleteCache() {
+		global $config;
+		if ($handle = opendir($config['cache_dir'])) {
+			while (false !== ($entry = readdir($handle))) {
+				echo "$entry\n";
+			}
+		} else {
+			NMM_Log::log("Can't open cache directory.", NMM_LOG_LEVEL::ERROR);
+		}
 	}
 	
 	public function createObject($tableName) {

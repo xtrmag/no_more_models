@@ -2,13 +2,21 @@
 class NMM_DB {
 
 	private $_adapter;
+	private $_cache;
 	private $_cacheFolder;
 	private $_cahceLifeTime;
 	
 	function __construct($adapter) {
+		global $config;
 		$this->_adapter = $adapter;
-		$this->_cacheFolder = "cache";
-		$this->_cahceLifeTime = 60 * 60 * 2 * 24;
+	
+		if($config['cacheing']) {
+			$this->_cache = true;
+			$this->_cacheFolder   = $config['cache_dir'];
+			$this->_cahceLifeTime = $config['cache_time'];
+		} else {
+			$this->_cache = false;
+		}
 	}
 
 	public function setAdapter($adapter) {
@@ -24,7 +32,7 @@ class NMM_DB {
 		if(!file_exists($file) || filemtime($file) <= time()-$this->_cahceLifeTime) {
 			$content = serialize($fieldNameArr);
 			file_put_contents($file, $content);
-			NMM_Log::log("table: ".$tableName." cached.");
+			NMM_Log::log("table: ".$tableName." cached.", NMM_LOGLEVEL::INFO);
 		}
 	}
 	
@@ -38,7 +46,7 @@ class NMM_DB {
 	
 	public function getFieldNamesToArray($tableName) {
 	
-		$obj_arr = $this->checkCache($tableName);
+		$obj_arr = ($this->_cache) ? $this->checkCache($tableName) : null;
 		$i = 0;
 		
 		if($obj_arr == null) 
@@ -53,7 +61,8 @@ class NMM_DB {
 				$i++;
 			}
 		}
-		$this->cacheFieldNames($obj_arr, $tableName);
+		
+		if ($this->_cache) $this->cacheFieldNames($obj_arr, $tableName);
 		return $obj_arr;
 	}
 	

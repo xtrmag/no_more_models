@@ -29,6 +29,8 @@ include "no_more_models/nmm.php";
 //NMM::getInstance()->getADP()->disconnect();
 //die();
 
+//NMM::getInstance()->deleteCache();
+//die();
 
 //Time watch
 $time = microtime();
