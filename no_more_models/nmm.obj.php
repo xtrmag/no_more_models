@@ -7,6 +7,9 @@ class NMM_Object {
 	private $_fields_arr;
 	private $_table;
 	
+	private $_primary_f;
+	private $_primary_v;
+	
 	function __construct($table, $db) {
 		$this->_db = $db;
 		$this->_table = $table;
@@ -25,7 +28,33 @@ class NMM_Object {
 		$this->_fields->$fieldName = $value;
 	}
 	
-	public function fill($where) {
+	private function hasPrimary() {
+		if(!empty($this->_primary_f) && !empty($this->_primary_v)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private function createWhereFromPrimary() {
+		if($this->hasPrimary()) {
+			$where =  $this->_primary_f." = ".$this->_primary_v;
+			return $where;
+		} else {
+			NMM_Log::log("No primary key defined on ".$this->_table." table.", NMM_LOGLEVEL::ERROR);
+			throw new Exception("No primary key defined on ".$this->_table." table.");
+		}
+	}
+	
+	public function setPrimary($fieldName, $value) {
+		$this->_primary_f = $fieldName;
+		$this->_primary_v = $value;
+	}
+	
+	public function fill($where=null) {
+	
+		if($where==null) $where = $this->createWhereFromPrimary();
+	
 		$adp = $this->_db->getAdapter();
 		
 		$adp->connect();
@@ -63,7 +92,10 @@ class NMM_Object {
 		$adp->disconnect();
 	}
 	
-	public function update($where) {
+	public function update($where=null) {
+	
+		if($where==null) $where = $this->createWhereFromPrimary();
+		
 		$adp = $this->_db->getAdapter();
 		
 		$query = "UPDATE ".$this->_table." SET ";
@@ -82,7 +114,10 @@ class NMM_Object {
 		$adp->disconnect();
 	}
 	
-	public function delete($where) {
+	public function delete($where=null) {
+	
+		if($where==null) $where = $this->createWhereFromPrimary();
+		
 		$adp = $this->_db->getAdapter();
 		$adp->connect();
 		$adp->query("DELETE FROM ".$this->_table." WHERE ".$where);
