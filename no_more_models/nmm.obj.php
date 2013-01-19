@@ -63,7 +63,7 @@ class NMM_Object {
 		$adp->disconnect();
 	}
 	
-	public function update() {
+	public function update($where) {
 		$adp = $this->_db->getAdapter();
 		
 		$query = "UPDATE ".$this->_table." SET ";
@@ -75,7 +75,7 @@ class NMM_Object {
 				$query .= ", ";	
 			$i--;
 		}
-		$query .= " WHERE nform_id = 1";
+		$query .= " WHERE ".$where;
 		
 		$adp->connect();
 		$adp->query($query);

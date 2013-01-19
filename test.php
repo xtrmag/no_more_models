@@ -64,7 +64,7 @@ stopwatch($start);
 
 
 print ("-- Update --<br>");
-$nmm_obj->update();
+$nmm_obj->update("test_id = 1");
 $nmm_obj2 = NMM::getInstance()->createObject('test');
 $nmm_obj2->fill("test_id = 1");
 print_array($nmm_obj2->get());
