@@ -29,6 +29,7 @@ include "no_more_models/nmm.php";
 //NMM::getInstance()->getADP()->disconnect();
 //die();
 
+//Delete cache
 //NMM::getInstance()->deleteCache();
 //die();
 

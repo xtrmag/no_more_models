@@ -40,10 +40,13 @@ class NMM {
 		global $config;
 		if ($handle = opendir($config['cache_dir'])) {
 			while (false !== ($entry = readdir($handle))) {
-				echo "$entry\n";
+				if($entry != ".." && $entry != ".") {
+					unlink($config['cache_dir']."/".$entry);
+				}
 			}
+			NMM_Log::log("Cache deleted.", NMM_LOGLEVEL::INFO);
 		} else {
-			NMM_Log::log("Can't open cache directory.", NMM_LOG_LEVEL::ERROR);
+			NMM_Log::log("Can't open cache directory.", NMM_LOGLEVEL::ERROR);
 		}
 	}
 	
