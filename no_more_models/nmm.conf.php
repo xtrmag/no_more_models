@@ -1,10 +1,22 @@
 <?php
+
+/* 
+//For PostgreSQL
 $config['host'] = 'localhost';
-$config['port'] = '3306'; //pg:'5432';
+$config['port'] = '5432';
+$config['database'] = 'test';
+$config['user'] = 'postgres';
+$config['password'] = '1234567';
+$config['adapter'] = "NMM_Std_Postgres_Adapter";
+*/
+
+//For MySQL
+$config['host'] = 'localhost';
+$config['port'] = '3306';
 $config['database'] = 'test';
 $config['user'] = 'root';
 $config['password'] = '';
-$config['adapter'] = "NMM_Std_Mysql_Adapter"; //pg:"NMM_Std_Postgres_Adapter";
+$config['adapter'] = "NMM_Std_Mysql_Adapter";
 
 //------------------------------------------
 $config['cacheing']   = true;
